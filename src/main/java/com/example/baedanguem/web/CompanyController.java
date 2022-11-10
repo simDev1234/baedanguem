@@ -4,6 +4,7 @@ import com.example.baedanguem.model.Company;
 import com.example.baedanguem.persist.entity.CompanyEntity;
 import com.example.baedanguem.service.CompanyService;
 import lombok.RequiredArgsConstructor;
+import lombok.var;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,11 @@ public class CompanyController {
 
     @GetMapping("/autocomplete")
     public ResponseEntity<?> autocomplete(@RequestParam String keyword) {
-        return null;
+
+        // 자동완성 리스트
+        var result = this.companyService.autocomplete(keyword);
+
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/")
@@ -41,6 +46,8 @@ public class CompanyController {
         }
 
         Company company = this.companyService.save(ticker);
+
+        this.companyService.addAutocompleteKeyword(company.getName()); // 자동완성 키워드 추가
 
         return ResponseEntity.ok(company);
     }

@@ -8,6 +8,7 @@ import com.example.baedanguem.persist.entity.CompanyEntity;
 import com.example.baedanguem.persist.entity.DividendEntity;
 import com.example.baedanguem.scraper.Scraper;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.Trie;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class CompanyService {
+
+    private final Trie trie;
 
     private final Scraper yahooFinanceScraper;
 
@@ -63,4 +66,20 @@ public class CompanyService {
     public Page<CompanyEntity> getAllCompany(Pageable pageable){
         return this.companyRepository.findAll(pageable);
     }
+
+    // 자동완성 - Trie에 단어 추가
+    public void addAutocompleteKeyword(String keyword){
+        this.trie.put(keyword, null); // 아파치의 trie의 경우 key에 단어뿐 아니라, 추가적으로 value도 넣어줄 수 있도록 되어 있다.
+    }
+
+    // 자동완성 - Trie에서 접두사가 일치하는 단어 리스트 가져오기
+    public List<String> autocomplete(String keyword){
+        return (List<String>) this.trie.prefixMap(keyword).keySet().stream().collect(Collectors.toList());
+    }
+
+    // 자동완성 - Trie에서 단어 삭제
+    public void deleteAutocompleteKeyword(String keyword){
+        this.trie.remove(keyword);
+    }
+
 }
