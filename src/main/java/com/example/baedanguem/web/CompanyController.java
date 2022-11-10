@@ -22,7 +22,7 @@ public class CompanyController {
     public ResponseEntity<?> autocomplete(@RequestParam String keyword) {
 
         // 자동완성 리스트
-        var result = this.companyService.autocomplete(keyword);
+        var result = this.companyService.getCompanyNamesByKeyword(keyword);
 
         return ResponseEntity.ok(result);
     }
