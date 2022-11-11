@@ -1,0 +1,18 @@
+###
+POST http://localhost:8080/company
+Content-Type: application/json
+
+{
+  "ticker": "MMM"
+}
+
+<> 2022-11-11T173236.200.json
+<> 2022-11-11T173112.404.json
+<> 2022-11-11T173050.404.json
+<> 2022-11-11T173037.404.json
+<> 2022-11-11T172923.404.json
+
+###
+GET http://localhost:8080/finance/dividend/3M Company
+
+<> 2022-11-11T173325.200.json

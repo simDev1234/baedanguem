@@ -27,7 +27,7 @@ public class CompanyController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<?> searchCompany(final Pageable pageable) {
 
         Page<CompanyEntity> companies = this.companyService.getAllCompany(pageable);
@@ -36,7 +36,7 @@ public class CompanyController {
 
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<?> addCompany(@RequestBody Company request){
 
         String ticker = request.getTicker().trim();
@@ -52,7 +52,7 @@ public class CompanyController {
         return ResponseEntity.ok(company);
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping
     public ResponseEntity<?> deleteCompany(){
         return null;
     }

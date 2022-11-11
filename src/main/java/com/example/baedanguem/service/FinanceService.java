@@ -3,12 +3,14 @@ package com.example.baedanguem.service;
 import com.example.baedanguem.model.Company;
 import com.example.baedanguem.model.Dividend;
 import com.example.baedanguem.model.ScrapedResult;
+import com.example.baedanguem.model.constants.CacheKey;
 import com.example.baedanguem.persist.CompanyRepository;
 import com.example.baedanguem.persist.DividendRepository;
 import com.example.baedanguem.persist.entity.CompanyEntity;
 import com.example.baedanguem.persist.entity.DividendEntity;
 import lombok.AllArgsConstructor;
 import lombok.var;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class FinanceService {
 
     private final DividendRepository dividendRepository;
 
+    @Cacheable(key = "#companyName", value = CacheKey.KEY_FINANCE)
     public ScrapedResult getDividendByCompanyName(String companyName) {
 
         // 1. 회사명을 기준으로 회사 정보를 조회
@@ -36,19 +39,12 @@ public class FinanceService {
 
         for (var entity : dividendEntities) {
 
-            dividends.add(Dividend.builder()
-                    .date(entity.getDate())
-                    .dividend(entity.getDividend())
-                    .build());
+            dividends.add(new Dividend(entity.getDate(), entity.getDividend()));
 
         }
 
         return new ScrapedResult(
-                Company.builder()
-                        .ticker(company.getTicker())
-                        .name(company.getName())
-                        .build(),
-                dividends
+                new Company(company.getTicker(), company.getName()), dividends
         );
 
     }

@@ -1,5 +1,6 @@
 package com.example.baedanguem.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import java.util.ArrayList;
